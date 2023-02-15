@@ -1,12 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-    
+    <input type="text" id="nomePoke">
+    <button id="myButton">GO</button>
+    <div id="myContainer"></div>
+
+
+
 </body>
+<script>
+    const nomePoke = document.getElementById("nomePoke");
+    const myButton = document.getElementById("myButton");
+    const myContainer = document.getElementById("myContainer");
+
+    async function getData(url) {
+        try {
+            const response = await fetch(url);
+            // 
+            const data = await response.json();
+            return [data, response.status];
+            // else {
+
+            //  }
+
+        } catch (error) {
+            return [,400]
+            
+
+
+        }
+
+    }
+    async function printData() {
+        let url = `https://pokeapi.co/api/v2/pokemon/${nomePoke.value}`
+        myContainer.innerHTML = "";
+        const result = await getData(url);
+        const data = result[0];
+        if (result[1] == 200) {
+            const para = document.createElement("p")
+            para.innerHTML = `la base experience del tuo poke è ${data.base_experience}`;
+            myContainer.appendChild(para)
+        }
+        else {
+            myContainer.innerHTML = "<p> il poke non è stato trovato </p>"
+
+        }
+
+
+    }
+
+    myButton.addEventListener("click", printData)
+
+
+</script>
+
 </html>
